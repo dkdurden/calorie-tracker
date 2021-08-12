@@ -51,7 +51,7 @@ export function changeSubmitGroupState(state: string) {
         htmlString = `
             <button
                 type="submit"
-                name="update"
+                data-action="update"
                 class="calorie-form__submit btn-warning"
             >
                 <i class="fas fa-plus"></i>
@@ -59,7 +59,7 @@ export function changeSubmitGroupState(state: string) {
             </button>
             <button
                 type="submit"
-                name="delete"
+                data-action="delete"
                 class="calorie-form__submit btn-danger"
             >
                 <i class="fas fa-plus"></i>
@@ -70,7 +70,7 @@ export function changeSubmitGroupState(state: string) {
         htmlString = `
         <button
             type="submit"
-            name="add"
+            data-action="add"
             class="calorie-form__submit"
             id="add-item"
         >

@@ -61,7 +61,7 @@ clearButton.addEventListener('click', () => {
 function handleFormSubmit(e: any): void {
     e.preventDefault();
 
-    const actionType = e.submitter.name;
+    const actionType = e.submitter.dataset.action;
 
     const mealName = meal.value;
     const calorieAmount = parseInt(calories.value);
