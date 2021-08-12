@@ -1,0 +1,18 @@
+@use './variables' as *;
+
+@media (min-width: $screen-md) {
+    .flex-md-row {
+        flex-direction: row;
+    }
+
+    .calorie-form__submit {
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .calorie-form__submit-group {
+        > button {
+            margin-right: 1rem;
+        }
+    }
+}

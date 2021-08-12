@@ -1,0 +1,56 @@
+@use './variables' as *;
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    font-size: 62.5%;
+}
+
+body {
+    font-size: 1.6rem;
+}
+
+a {
+    text-decoration: none;
+    color: $font-light;
+}
+
+button {
+    border: none;
+    background: none;
+    cursor: pointer;
+    background-color: $btn-primary;
+    font-size: 1.4rem;
+    color: $font-light;
+    padding: 1rem 2rem;
+    box-shadow: $box-shadow;
+    text-transform: uppercase;
+
+    &:hover {
+        background-color: adjust-color($color: $btn-primary, $saturation: 50%);
+    }
+}
+
+input {
+    border: none;
+    border-bottom: 1px solid $font-dark;
+
+    &:focus {
+        outline: none;
+        box-shadow: 0 1px $btn-primary;
+    }
+}
+
+li {
+    list-style: none;
+}
+
+// Typography
+
+h1 {
+    font-size: 4.2rem;
+}

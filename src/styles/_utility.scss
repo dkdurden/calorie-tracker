@@ -1,0 +1,91 @@
+@use './variables' as *;
+
+.container {
+    width: 70%;
+    margin: 0 auto;
+
+    @media (max-width: 992px) {
+        width: 90%;
+    }
+}
+
+.card {
+    padding: 3rem 1.5rem;
+    box-shadow: $box-shadow;
+
+    &__header {
+        font-size: 2.4rem;
+        font-weight: 400;
+        margin-bottom: 0.5em;
+    }
+}
+
+// Layout
+
+.flex {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.flex-basis-even {
+    * {
+        flex: 100%;
+    }
+}
+
+.flex-column {
+    flex-direction: column;
+}
+
+.align-center {
+    align-items: center;
+}
+
+.justify-between {
+    justify-content: space-between;
+}
+
+.no-gap {
+    gap: 0;
+}
+
+// Buttons
+
+.btn-primary {
+    background-color: $btn-primary;
+}
+
+.btn-secondary {
+    background-color: $btn-secondary;
+}
+
+.btn-warning {
+    background-color: $btn-warning;
+}
+
+.btn-danger {
+    background-color: $btn-danger;
+}
+
+// Other
+
+.text-center {
+    text-align: center;
+}
+
+.my-1 {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+
+.ml-1 {
+    margin-left: 0.5em;
+}
+
+.d-none {
+    display: none !important;
+}
+
+.d-block {
+    display: block !important;
+}
