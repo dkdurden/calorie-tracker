@@ -66,9 +66,9 @@ function handleFormSubmit(e: any): void {
     const mealName = meal.value;
     const calorieAmount = parseInt(calories.value);
 
-    if (!mealName || !calorieAmount) {
-        return;
-    }
+    // if (!mealName || !calorieAmount) {
+    //     return;
+    // }
 
     let items;
     if (actionType === 'update') {
