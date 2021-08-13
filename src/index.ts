@@ -26,10 +26,16 @@ import {
     clearFromLocalStorage,
 } from './controllers/storage';
 
-const form: HTMLElement = document.getElementById('calorie-form');
+const form = <HTMLFormElement>document.getElementById('calorie-form');
 const meal = <HTMLInputElement>document.getElementById('meal');
 const calories = <HTMLInputElement>document.getElementById('calories');
 const clearButton = <HTMLButtonElement>document.getElementById('clear-all');
+
+const addButton = document.querySelector('.calorie-form__submit');
+
+addButton.addEventListener('click', () => {
+    form.submit();
+});
 
 let localStorageItems = getFromStorage();
 if (localStorageItems.length > 0) {
