@@ -42,9 +42,12 @@ if (localStorageItems.length > 0) {
 
 addBackEventListener(() => {
     changeSubmitGroupState('add');
+    addClickEvents('add');
 });
 
-form.addEventListener('submit', handleFormSubmit);
+addClickEvents('add');
+
+form.addEventListener('submit', (e) => e.preventDefault());
 
 clearButton.addEventListener('click', () => {
     const items = clearItems();
@@ -58,30 +61,61 @@ clearButton.addEventListener('click', () => {
     populateItems(items);
 });
 
-function handleFormSubmit(e: any): void {
-    e.preventDefault();
-
-    const actionType = e.submitter.dataset.action;
-
+function handleAdd(e: any) {
     const mealName = meal.value;
     const calorieAmount = parseInt(calories.value);
 
-    // if (!mealName || !calorieAmount) {
-    //     return;
-    // }
+    const items = addItem(mealName, calorieAmount);
 
-    let items;
-    if (actionType === 'update') {
-        const item = getLastSelectedItem();
-        items = updateItem(item.id, mealName, calorieAmount);
-        changeSubmitGroupState('add');
-    } else if (actionType === 'delete') {
-        const item = getLastSelectedItem();
-        items = deleteItem(item.id);
-        changeSubmitGroupState('add');
-    } else {
-        items = addItem(mealName, calorieAmount);
-    }
+    addToLocalStorage(items);
+
+    const totalCalories = getTotalCalories();
+    showTotalCalories(totalCalories);
+
+    const calorieList = populateItems(items);
+
+    removeEvents('update', 'delete');
+    addClickEvents('add');
+
+    // There were no previous items
+    if (items.length === 1)
+        calorieList.addEventListener('click', handleItemClick);
+
+    if (items.length === 0)
+        calorieList.removeEventListener('click', handleItemClick);
+}
+
+function handleUpdate(e: any) {
+    const mealName = meal.value;
+    const calorieAmount = parseInt(calories.value);
+
+    const item = getLastSelectedItem();
+    const items = updateItem(item.id, mealName, calorieAmount);
+
+    removeEvents('update', 'delete');
+    changeSubmitGroupState('add');
+    addClickEvents('add');
+
+    addToLocalStorage(items);
+
+    hideBackButton();
+
+    const totalCalories = getTotalCalories();
+    showTotalCalories(totalCalories);
+
+    populateItems(items);
+}
+
+function handleDelete(e: any) {
+    const mealName = meal.value;
+    const calorieAmount = parseInt(calories.value);
+
+    const item = getLastSelectedItem();
+    const items = deleteItem(item.id);
+
+    removeEvents('update', 'delete');
+    changeSubmitGroupState('add');
+    addClickEvents('add');
 
     addToLocalStorage(items);
 
@@ -92,10 +126,6 @@ function handleFormSubmit(e: any): void {
     else showTotalCalories(totalCalories);
 
     const calorieList = populateItems(items);
-
-    // There were no previous items
-    if (items.length === 1 && actionType === 'add')
-        calorieList.addEventListener('click', handleItemClick);
 
     if (items.length === 0)
         calorieList.removeEventListener('click', handleItemClick);
@@ -123,8 +153,41 @@ function handleItemClick(e: MouseEvent) {
 
         setLastSelectedItem(item);
 
+        removeEvents('add');
+
         showBackButton();
         changeSubmitGroupState('edit');
         changeFormInputState(item.name, item.calories);
+
+        addClickEvents('update', 'delete');
     }
+}
+
+function addClickEvents(...events: Array<string>) {
+    const addBtn: any = document.getElementById('add-item');
+    const updateBtn: any = document.getElementById('update-btn');
+    const deleteBtn: any = document.getElementById('delete-btn');
+
+    events.forEach((event) => {
+        if (event === 'add' && addBtn)
+            addBtn.addEventListener('click', handleAdd);
+        else if (event === 'update' && updateBtn)
+            updateBtn.addEventListener('click', handleUpdate);
+        else if (event === 'delete' && deleteBtn)
+            deleteBtn.addEventListener('click', handleDelete);
+    });
+}
+
+function removeEvents(...events: Array<string>) {
+    const addBtn: any = document.getElementById('add-item');
+    const updateBtn: any = document.getElementById('update-btn');
+    const deleteBtn: any = document.getElementById('delete-btn');
+    events.forEach((event) => {
+        if (event === 'add' && addBtn)
+            addBtn.removeEventListener('click', handleAdd);
+        else if (event === 'update' && updateBtn)
+            updateBtn.removeEventListener('click', handleUpdate);
+        else if (event === 'delete' && deleteBtn)
+            deleteBtn.removeEventListener('click', handleDelete);
+    });
 }
