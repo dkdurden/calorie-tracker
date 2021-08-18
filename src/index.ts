@@ -11,14 +11,14 @@ import {
     clearItems,
 } from './controllers/items';
 import {
-    populateItems,
-    changeSubmitGroupState,
+    renderItems,
+    showEditState,
+    hideEditState,
     changeFormInputState,
     showTotalCalories,
     clearTotalCalories,
     showBackButton,
     hideBackButton,
-    addBackEventListener,
 } from './controllers/interface';
 import {
     addToLocalStorage,
@@ -40,11 +40,6 @@ if (localStorageItems.length > 0) {
     calorieList.addEventListener('click', handleItemClick);
 }
 
-addBackEventListener(() => {
-    changeSubmitGroupState('add');
-    addClickEvents('add');
-});
-
 addClickEvents('add');
 
 form.addEventListener('submit', (e) => e.preventDefault());
@@ -60,30 +55,6 @@ clearButton.addEventListener('click', () => {
 
     populateItems(items);
 });
-
-function handleAdd(e: any) {
-    const mealName = meal.value;
-    const calorieAmount = parseInt(calories.value);
-
-    const items = addItem(mealName, calorieAmount);
-
-    addToLocalStorage(items);
-
-    const totalCalories = getTotalCalories();
-    showTotalCalories(totalCalories);
-
-    const calorieList = populateItems(items);
-
-    removeEvents('update', 'delete');
-    addClickEvents('add');
-
-    // There were no previous items
-    if (items.length === 1)
-        calorieList.addEventListener('click', handleItemClick);
-
-    if (items.length === 0)
-        calorieList.removeEventListener('click', handleItemClick);
-}
 
 function handleUpdate(e: any) {
     const mealName = meal.value;

@@ -28,6 +28,11 @@ class ItemList {
         return this.items;
     }
 
+    getItem(id: number) {
+        const item = this.items.find((item: Item) => item.id === id);
+        return item || null;
+    }
+
     addItem(item: Item) {
         this.items.push(item);
         this.length++;
@@ -127,6 +132,10 @@ export function deleteItem(id: number) {
 
 export function getItems(): Array<Item> {
     return list.getItems();
+}
+
+export function getItem(id: number) {
+    list.getItem(id);
 }
 
 export function clearItems() {
