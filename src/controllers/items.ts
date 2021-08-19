@@ -94,12 +94,12 @@ class ItemList {
         return this.items;
     }
 
-    setLastSelectedItem(item: Item) {
+    setSelectedItem(item: Item) {
         this.lastSelectedItem = item;
         return this.lastSelectedItem;
     }
 
-    getLastSelectedItem() {
+    getSelectedItem() {
         return this.lastSelectedItem;
     }
 
@@ -135,7 +135,7 @@ export function getItems(): Array<Item> {
 }
 
 export function getItem(id: number) {
-    list.getItem(id);
+    return list.getItem(id);
 }
 
 export function clearItems() {
@@ -146,12 +146,12 @@ export function setItems(items: any) {
     return list.setItems(<Array<Item>>items);
 }
 
-export function setLastSelectedItem(item: any) {
-    return list.setLastSelectedItem(<Item>item);
+export function setSelectedItem(item: any) {
+    return list.setSelectedItem(<Item>item);
 }
 
-export function getLastSelectedItem() {
-    return list.getLastSelectedItem();
+export function getSelectedItem() {
+    return list.getSelectedItem();
 }
 
 export function getTotalCalories() {

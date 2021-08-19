@@ -14,6 +14,18 @@
             <a href="#" class="header__brand">Calorie Tracker</a>
             <button id="clear-all">Clear All</button>
         </header>
+        <section class="container mb-1" id="banner-section">
+            <div class="banner flex no-gap justify-between">
+                <p class="mr-1">
+                    This application uses local browser storage to save the
+                    information that is entered so that the data persists
+                    between sessions.
+                </p>
+                <button class="banner__dismiss pl-2" id="dismiss">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </section>
         <main class="container">
             <section class="card">
                 <header>
@@ -61,10 +73,9 @@
                             "
                         >
                             <button
-                                type="submit"
                                 name="add"
                                 class="calorie-form__submit"
-                                id="add-item"
+                                id="add-btn"
                             >
                                 <i class="fas fa-plus"></i>
                                 <span>Add Meal</span>
@@ -75,7 +86,7 @@
                             type="button"
                             class="calorie-form__submit btn-secondary d-none"
                         >
-                            <i class="fas fa-plus"></i>
+                            <i class="fas fa-backward"></i>
                             <span>Back</span>
                         </button>
                     </div>

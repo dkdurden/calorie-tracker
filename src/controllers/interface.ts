@@ -10,10 +10,14 @@ export const selectors = {
     addBtn: '#add-btn',
     updateBtn: '#update-btn',
     deleteBtn: '#delete-btn',
+    bannerSection: '#banner-section',
+    dismissBtn: '#dismiss',
 };
 
 export function showTotalCalories(calories: number) {
-    const calorieHeader = document.getElementById(selectors.calorieHeader);
+    const calorieHeader = <HTMLHeadingElement>(
+        document.querySelector(selectors.calorieHeader)
+    );
 
     calorieHeader.innerText = `Total Calories: ${calories}`;
 
@@ -21,7 +25,9 @@ export function showTotalCalories(calories: number) {
 }
 
 export function clearTotalCalories() {
-    const calorieHeader = document.getElementById(selectors.calorieHeader);
+    const calorieHeader = <HTMLHeadingElement>(
+        document.querySelector(selectors.calorieHeader)
+    );
 
     calorieHeader.innerText = '';
 
@@ -52,8 +58,8 @@ export function renderItems(items: Array<any>) {
 }
 
 export function showEditState(
-    updateEvent: (e: MouseEvent) => {},
-    deleteEvent: (e: MouseEvent) => {}
+    updateEvent: (e: MouseEvent) => void,
+    deleteEvent: (e: MouseEvent) => void
 ) {
     const submitBtnGroup = document.querySelector(selectors.submitBtnGroup);
     submitBtnGroup.innerHTML = '';
@@ -63,16 +69,36 @@ export function showEditState(
     updateBtn.id = 'update-btn';
     updateBtn.addEventListener('click', updateEvent);
 
+    const updateIcon = document.createElement('i');
+    updateIcon.className = 'fas fa-edit';
+
+    const updateBtnText = document.createElement('span');
+    updateBtnText.innerText = 'Update meal';
+
+    updateBtn.appendChild(updateIcon);
+    updateBtn.appendChild(updateBtnText);
+
     const deleteBtn = document.createElement('button');
     deleteBtn.className = 'calorie-form__submit btn-danger';
     deleteBtn.id = 'delete-btn';
     deleteBtn.addEventListener('click', deleteEvent);
 
+    const deleteIcon = document.createElement('i');
+    deleteIcon.className = 'fas fa-trash-alt';
+
+    const deleteBtnText = document.createElement('span');
+    deleteBtnText.innerText = 'Delete meal';
+
+    deleteBtn.appendChild(deleteIcon);
+    deleteBtn.appendChild(deleteBtnText);
+
     submitBtnGroup.appendChild(updateBtn);
     submitBtnGroup.appendChild(deleteBtn);
+
+    showBackButton();
 }
 
-export function hideEditState(addEvent: (e: MouseEvent) => {}) {
+export function hideEditState(addEvent: (e: MouseEvent) => void) {
     const submitBtnGroup = document.querySelector(selectors.submitBtnGroup);
     submitBtnGroup.innerHTML = '';
 
@@ -81,7 +107,18 @@ export function hideEditState(addEvent: (e: MouseEvent) => {}) {
     addButton.id = 'add-btn';
     addButton.addEventListener('click', addEvent);
 
+    const icon = document.createElement('i');
+    icon.className = 'fas fa-plus';
+
+    const btnText = document.createElement('span');
+    btnText.innerText = 'Add meal';
+
+    addButton.appendChild(icon);
+    addButton.appendChild(btnText);
+
     submitBtnGroup.appendChild(addButton);
+
+    hideBackButton();
 }
 
 export function getFormInput() {
@@ -90,7 +127,7 @@ export function getFormInput() {
         document.querySelector(selectors.calorieInput)
     );
 
-    return { name: name.value, calories: parseInt(calories.value) };
+    return { name: name.value, calories: calories.value };
 }
 
 export function changeFormInputState(name: string, calories: number) {
@@ -101,7 +138,19 @@ export function changeFormInputState(name: string, calories: number) {
     calorieInput.value = calories.toString();
 }
 
-export function showBackButton() {
+export function clearForm() {
+    const mealInput = <HTMLInputElement>document.getElementById('meal');
+    const calorieInput = <HTMLInputElement>document.getElementById('calories');
+
+    mealInput.value = '';
+    calorieInput.value = '';
+}
+
+export function hideBanner() {
+    document.querySelector(selectors.bannerSection).remove();
+}
+
+function showBackButton() {
     const backButton = document.querySelector(selectors.backButton);
 
     if (backButton.className.includes('d-block')) return;
@@ -109,7 +158,7 @@ export function showBackButton() {
     backButton.className = backButton.className.replace('d-none', 'd-block');
 }
 
-export function hideBackButton() {
+function hideBackButton() {
     const backButton = document.querySelector(selectors.backButton);
 
     if (backButton.className.includes('d-none')) return;

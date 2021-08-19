@@ -1,48 +1,106 @@
-import {
-    selectors,
-    clearTotalCalories,
-    showTotalCalories,
-    renderItems,
-    getFormInput,
-} from './interface';
-import { addItem, clearItems, getTotalCalories, getItem } from './items';
-import { setLocalStorage, clearLocalStorage } from './storage';
+import * as Interface from './interface';
+import * as Items from './items';
+import * as Storage from './storage';
+
+function init() {
+    const localStorageItems = Storage.getFromLocalStorage();
+
+    if (localStorageItems.length > 0) {
+        const items = Items.setItems(localStorageItems);
+
+        const totalCalories = Items.getTotalCalories();
+        Interface.showTotalCalories(totalCalories);
+
+        Interface.renderItems(items);
+    }
+
+    loadEventListeners();
+}
 
 function loadEventListeners() {
     document
-        .querySelector(selectors.form)
+        .querySelector(Interface.selectors.dismissBtn)
+        .addEventListener('click', hideBanner);
+    document
+        .querySelector(Interface.selectors.form)
         .addEventListener('submit', (e) => e.preventDefault());
 
     document
-        .querySelector(selectors.calorieList)
+        .querySelector(Interface.selectors.calorieList)
         .addEventListener('click', handleItemClick);
 
-    document.querySelector(selectors.clearBtn).addEventListener('click', () => {
-        const items = clearItems();
-
-        renderItems(items);
-
-        clearTotalCalories();
-
-        clearLocalStorage();
-    });
+    document
+        .querySelector(Interface.selectors.clearBtn)
+        .addEventListener('click', handleClearAll);
 
     document
-        .querySelector(selectors.addBtn)
+        .querySelector(Interface.selectors.addBtn)
         .addEventListener('click', handleAdd);
+
+    document
+        .querySelector(Interface.selectors.backButton)
+        .addEventListener('click', handleBack);
 }
 
-function handleAdd(e: any) {
-    const { name, calories } = getFormInput();
+function handleAdd(e: MouseEvent) {
+    const { name, calories } = Interface.getFormInput();
 
-    const items = addItem(name, calories);
+    if (name == '' || calories == '' || parseInt(calories) <= 0) return;
 
-    setLocalStorage(items);
+    console.log(name, calories);
 
-    const totalCalories = getTotalCalories();
-    showTotalCalories(totalCalories);
+    const items = Items.addItem(name, parseInt(calories));
 
-    renderItems(items);
+    Storage.setLocalStorage(items);
+
+    const totalCalories = Items.getTotalCalories();
+    Interface.showTotalCalories(totalCalories);
+
+    Interface.renderItems(items);
+
+    Interface.clearForm();
+}
+
+function handleDelete(e: any) {
+    const item = Items.getSelectedItem();
+    const items = Items.deleteItem(item.id);
+
+    Interface.hideEditState(handleAdd);
+
+    const totalCalories = Items.getTotalCalories();
+    if (totalCalories === 0) Interface.clearTotalCalories();
+    else Interface.showTotalCalories(totalCalories);
+
+    Interface.renderItems(items);
+
+    Storage.setLocalStorage(items);
+
+    Interface.clearForm();
+}
+
+function handleUpdate(e: any) {
+    const { name, calories } = Interface.getFormInput();
+
+    if (name == '' || calories == '' || parseInt(calories) <= 0) return;
+
+    const item = Items.getSelectedItem();
+    const items = Items.updateItem(item.id, name, parseInt(calories));
+
+    Interface.hideEditState(handleAdd);
+
+    const totalCalories = Items.getTotalCalories();
+    Interface.showTotalCalories(totalCalories);
+
+    Interface.renderItems(items);
+
+    Storage.setLocalStorage(items);
+
+    Interface.clearForm();
+}
+
+function handleBack(e: MouseEvent) {
+    Interface.hideEditState(handleAdd);
+    Interface.clearForm();
 }
 
 function handleItemClick(e: MouseEvent) {
@@ -53,28 +111,40 @@ function handleItemClick(e: MouseEvent) {
         target.nodeName === 'svg' ||
         target.nodeName === 'path'
     ) {
-        let id: string;
+        let id: number;
 
         // Deal with event delegation target issues
-        if (target.nodeName === 'svg') id = target.parentElement.dataset.id;
+        if (target.nodeName === 'svg')
+            id = parseInt(target.parentElement.dataset.id);
         else if (target.nodeName === 'path')
-            id = target.parentElement.parentElement.dataset.id;
-        else id = target.dataset.id;
+            id = parseInt(target.parentElement.parentElement.dataset.id);
+        else id = parseInt(target.dataset.id);
 
-        const items = getItems();
+        const items = Items.getItems();
 
-        const item = getItem(id);
+        const item = Items.getItem(id);
 
-        const item = items.find((item: any) => item.id === parseInt(id));
+        Items.setSelectedItem(item);
 
-        setLastSelectedItem(item);
-
-        removeEvents('add');
-
-        showBackButton();
-        changeSubmitGroupState('edit');
-        changeFormInputState(item.name, item.calories);
-
-        addClickEvents('update', 'delete');
+        Interface.showEditState(handleUpdate, handleDelete);
+        Interface.changeFormInputState(item.name, item.calories);
     }
 }
+
+function handleClearAll(e: MouseEvent) {
+    const items = Items.clearItems();
+
+    Interface.renderItems(items);
+
+    Interface.clearTotalCalories();
+
+    Storage.clearLocalStorage();
+}
+
+function hideBanner() {
+    Interface.hideBanner();
+}
+
+export default {
+    init,
+};

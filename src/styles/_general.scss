@@ -7,11 +7,12 @@
 }
 
 :root {
-    font-size: 62.5%;
+    font-size: 50%;
 }
 
 body {
     font-size: 1.6rem;
+    font-family: $ff-primary;
 }
 
 a {
@@ -25,6 +26,7 @@ button {
     cursor: pointer;
     background-color: $btn-primary;
     font-size: 1.4rem;
+    font-family: $ff-primary;
     color: $font-light;
     padding: 1rem 2rem;
     box-shadow: $box-shadow;
@@ -42,6 +44,10 @@ input {
     &:focus {
         outline: none;
         box-shadow: 0 1px $btn-primary;
+    }
+
+    &::placeholder {
+        font-family: $ff-primary;
     }
 }
 
