@@ -1,6 +1,9 @@
 @use './variables' as *;
 
 @media (min-width: $screen-md) {
+    :root {
+        font-size: 62.5%;
+    }
     .flex-md-row {
         flex-direction: row;
     }

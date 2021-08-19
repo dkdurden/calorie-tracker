@@ -1,17 +1,19 @@
-export function getFromStorage() {
-    const items = localStorage.getItem('items');
+const fieldName = 'items';
 
-    if (items == null) {
+export function getFromLocalStorage() {
+    const data = localStorage.getItem(fieldName);
+
+    if (data == null) {
         return [];
     }
 
-    return JSON.parse(items);
+    return JSON.parse(data);
 }
 
-export function addToLocalStorage(items: Array<any>) {
-    localStorage.setItem('items', JSON.stringify(items));
+export function setLocalStorage(data: any) {
+    localStorage.setItem(fieldName, JSON.stringify(data));
 }
 
-export function clearFromLocalStorage() {
+export function clearLocalStorage() {
     localStorage.removeItem('items');
 }

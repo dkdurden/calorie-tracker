@@ -28,6 +28,11 @@ class ItemList {
         return this.items;
     }
 
+    getItem(id: number) {
+        const item = this.items.find((item: Item) => item.id === id);
+        return item || null;
+    }
+
     addItem(item: Item) {
         this.items.push(item);
         this.length++;
@@ -89,12 +94,12 @@ class ItemList {
         return this.items;
     }
 
-    setLastSelectedItem(item: Item) {
+    setSelectedItem(item: Item) {
         this.lastSelectedItem = item;
         return this.lastSelectedItem;
     }
 
-    getLastSelectedItem() {
+    getSelectedItem() {
         return this.lastSelectedItem;
     }
 
@@ -129,6 +134,10 @@ export function getItems(): Array<Item> {
     return list.getItems();
 }
 
+export function getItem(id: number) {
+    return list.getItem(id);
+}
+
 export function clearItems() {
     return list.clearItems();
 }
@@ -137,12 +146,12 @@ export function setItems(items: any) {
     return list.setItems(<Array<Item>>items);
 }
 
-export function setLastSelectedItem(item: any) {
-    return list.setLastSelectedItem(<Item>item);
+export function setSelectedItem(item: any) {
+    return list.setSelectedItem(<Item>item);
 }
 
-export function getLastSelectedItem() {
-    return list.getLastSelectedItem();
+export function getSelectedItem() {
+    return list.getSelectedItem();
 }
 
 export function getTotalCalories() {
